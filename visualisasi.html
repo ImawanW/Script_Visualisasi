@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Laman Visualisasi</title>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://kit.fontawesome.com/b0f905442e.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    
+        <!-- Memanggil css dan js leaflet -->
+        <link rel="stylesheet" href="resources/leaflet/leaflet.css" />
+        <script src="resources/leaflet/leaflet.js"></script>
+      
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+        <link rel="stylesheet" href="css/leaflet-sidebar.css" />
+        <style>
+
+
+            /* Style untuk header */
+            header {
+                font-family: Helvetica;
+                background-color: lightcyan;
+                text-align: center;
+                padding: 5px;
+                font-size: 15px;
+                color: blue;
+                width: 100%;
+            }
+            /* Style untuk header 2 */
+            h2 {
+                color: blue;
+                font-family: Arial;
+            }
+            /* Style untuk paragraf */
+            p {
+                font-family: sans-serif;
+                text-align: justify;
+            }
+
+            /* Mengatur ukuran map */
+            #map {
+                width: 100%;
+                height: 99%;
+                position: absolute;
+            }
+            /*sidebar */
+            .sidebar-picture {
+                margin-top: 10px;
+                text-align: center;
+            }
+            .sidebar-picture img {
+                width: 180px;
+                height: 90px;
+            }
+
+            .basemap-group {
+                margin-bottom: 10px;
+                font-family: Helvetica;
+            }
+
+            .basemap-group-title {
+                font-family: Helvetica;
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+            .basemap-group-content {
+                display: none;
+                margin-top: 5px;
+            }
+
+            .basemap-list {
+                display: grid;
+                gap: 10px;
+            }
+
+            .basemap-list2 {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .basemap-listp {
+                display: grid;
+                padding-left: 30px;
+                padding-bottom: 5px;
+            }
+
+            .basemap-item input [type="checkbox"] {
+                margin-right: 5px;
+            }
+
+            h8 {
+              padding-left: 30px;
+            }
+
+            .image-container2 {
+                position: relative;
+                width: 10;
+                height: 10;
+                z-index: 3000;
+            }
+    
+            .image-container2 img {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 10;
+                height: 10;
+            }
+
+            .IsiPeta {
+                z-index: 2000;
+            }
+
+            .BasemapPeta {
+                z-index: 1000;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="image-container2" class="image-container2"></div>
+         <!-- Memanggil JS Layer Vektor --> 
+        <script src="layers/BAdmDesa.js"></script>
+        <script src="layers/BAdmKecamatan.js"></script>
+        <script src="layers/LCZVektor.js"></script>
+
+        <div id="sidebar" class="sidebar collapsed">
+            <!-- Nav tabs -->
+            <div class="sidebar-tabs">
+                <ul role="tablist">
+                    <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                    <li><a href="#basemap" role="tab"><i class="fa-solid fa-map"></i></a></li>
+                    <li><a href="#layer" role="tab"><i class="fa-solid fa-layer-group"></i></a></li>
+                    <li><a href="https://github.com/Turbo87/sidebar-v2" role="tab" target="_blank"><i class="fa fa-github"></i></a></li>
+                </ul>
+    
+                <ul role="tablist">
+                    <li><a href="beranda.html" role="tab"><i class="fa fa-home"></i></a></li>
+                </ul>
+            </div>
+    
+            <!-- Tab panes -->
+            <div class="sidebar-content">
+                <div class="sidebar-pane" id="home">
+                    <h1 class="sidebar-header">
+                        Keterangan
+                        <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+                    </h1>
+                    <p> Laman visualisasi ini memiliki 2 fungsi untuk menampilkan basemap dan hasil peta. Pengguna dapat 
+                        memilih basemap maupun peta yang ingin ditampilkan. Apabila pengguna ingin kembali ke laman beranda, maka dapat 
+                        memilih ikon "Rumah" di pojok kiri bawah</p>              
+                </div>
+    
+                <div class="sidebar-pane" id="basemap">
+                
+                    <h1 class="sidebar-header">Basemap<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+
+                    <div class="basemap-list2">
+                    <div class="basemap-item">
+                        <input type="checkbox" id="osmMapCheck" class="BasemapPeta">
+                        <label for="osmMapCheck">Openstreetmap</label>
+                        <div class="sidebar-picture">
+                            <img src="images/OSM.png" alt="Openstreetmap" />
+                        </div>
+                    </div>
+
+                    <div class="basemap-item">
+                        <input type="checkbox" id="gstMapCheck" class="BasemapPeta">
+                        <label for="gstMapCheck">Google Street</label>
+                        <div class="sidebar-picture">
+                            <img src="images/GoogleStreet.png" alt="Google Street" />
+                        </div>
+                    </div>
+
+                    <div class="basemap-item">
+                        <input type="checkbox" id="gtlMapCheck" class="BasemapPeta">
+                        <label for="gtlMapCheck">Google Satellite</label>
+                        <div class="sidebar-picture">
+                            <img src="images/GoogleSatellite.png" alt="Google Satellite" />
+                        </div>
+                    </div>
+                    
+                    <div class="basemap-item">
+                        <input type="checkbox" id="gybMapCheck" class="BasemapPeta">
+                        <label for="gybMapCheck">Google Hybird</label>
+                        <div class="sidebar-picture">
+                            <img src="images/GoogleHybird.png" alt="Google Hybird" />
+                        </div>
+                    </div>
+
+                    <div class="basemap-item">
+                        <input type="checkbox" id="gtrMapCheck" class="BasemapPeta">
+                        <label for="gtrMapCheck">Google Terrain</label>
+                        <div class="sidebar-picture">
+                            <img src="images/GoogleTerrain.png" alt="Google Terrain" />
+                        </div>
+                    </div>
+
+                    <div class="basemap-item">
+                        <input type="checkbox" id="otmMapCheck" class="BasemapPeta">
+                        <label for="otmMapCheck">OSM Topografi</label>
+                        <div class="sidebar-picture">
+                            <img src="images/OSMTopografi.png" alt="OSM Topografi" />
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-pane" id="layer">
+                    <h1 class="sidebar-header">Layer<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                    <div class="basemap-group">
+                        <h4 class="basemap-group-title"> Batas Administrasi Kabupaten Sleman </h4>
+                        <div class="basemap-group-content">
+                            <div class="basemap-list">
+                                
+                                <div class="basemap-item">
+                                    <input type="checkbox" id="BAdmDesaCheck" class="IsiPeta">
+                                    <label for="BAdmDesaCheck">Batas Administrasi Desa</label>
+                                </div>
+                                
+                                <div class="basemap-item">
+                                    <input type="checkbox" id="BAdmKecamatanCheck" class="IsiPeta">
+                                    <label for="BAdmKecamatanCheck">Batas Administrasi Kecamatan</label>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                        <h4 class="basemap-group-title"> Peta LCZ Kabuapten Sleman </h4>
+                        <div class="basemap-group-content">
+                            <div class="basemap-list">
+                                <div class="basemap-item">
+                                    <input type="checkbox" id="LCZVektorCheck" class="IsiPeta">
+                                    <label for="LCZVektorCheck">Vektor LCZ</label>
+                                </div>
+                                <div class="basemap-item">
+                                    <input type="checkbox" id="LCZCheck" class="IsiPeta">
+                                    <label for="LCZCheck">Raster LCZ</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="basemap-group-title"> Peta SPL Kabupaten Sleman </h4>
+                        <div class="basemap-group-content">
+                            <div class="basemap-list">
+                              <h8 class="basemap-group-title", style="color: #ED7D31;"> Musim Kemarau </h8>
+                              <div class="basemap-group-content">
+                                <div class="basemap-listp">
+                                    <div class="basemap-item">
+                                        <input type="checkbox" id="LKemarau_2018Check" class="IsiPeta">
+                                        <label for="LKemarau_2018Check">2018</label>
+                                    </div>
+                                    <div class="basemap-item">
+                                        <input type="checkbox" id="LKemarau_2020Check" class="IsiPeta">
+                                        <label for="LKemarau_2020Check">2020</label>
+                                    </div>
+                                    <div class="basemap-item">
+                                        <input type="checkbox" id="LKemarau_2022Check" class="IsiPeta">
+                                        <label for="LKemarau_2022Check">2022</label>
+                                    </div>
+                                </div>
+                              </div>
+                              
+                              <h8 class="basemap-group-title", style="color: #5B9BD5;"> Musim Hujan </h8>
+                              <div class="basemap-group-content">
+                                <div class="basemap-listp">
+                                    <div class="basemap-item">
+                                        <input type="checkbox" id="LHujan_2018Check" class="IsiPeta">
+                                        <label for="LHujan_2018Check">2018</label>
+                                    </div>
+                                    <div class="basemap-item">
+                                        <input type="checkbox" id="LHujan_2020Check" class="IsiPeta">
+                                        <label for="LHujan_2020Check">2020</label>
+                                    </div>
+                                    <div class="basemap-item">
+                                        <input type="checkbox" id="LHujan_2022Check" class="IsiPeta">
+                                        <label for="LHujan_2022Check">2022</label>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                </div>
+    
+                <div class="sidebar-pane" id="settings">
+                    <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+                </div>
+            </div>
+        </div>
+    
+        <div id="map" class="sidebar-map"></div>
+        
+        <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+        <script src="js/leaflet-sidebar.js"></script>
+        
+        <script>
+
+        
+        // Mengatur pusat peta (center)
+            var map = L.map("map",{
+                center: [-7.68684,110.39784],
+                zoom: 11,
+                maxZoom: 15,
+                minZoom: 7,
+            });
+            
+        // Membuat Basemap via OSM
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}{r}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://carto.com/attributions">CARTO</a> contributors'}).addTo(map);
+        
+         // Membuat variabel sumber referensi basemap   
+            var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>',
+                otmLink = '<a href="http://opentopomap.org/">OpenTopoMap</a>';
+         
+        // Membuat variabel tautan basemap dan attribut
+            var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                osmAttrib = '&copy; ' + osmLink + ' Contributors',
+                otmUrl = 'http://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
+                otmAttrib = '&copy; '+otmLink+' Contributors';
+        
+        // Mendefinisikan basemap
+            var osmMap = L.tileLayer(osmUrl, {attribution: osmAttrib}),
+                gstMap = L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+                        subdomains:['mt0','mt1','mt2','mt3']});
+                gtlMap = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+                        subdomains:['mt0','mt1','mt2','mt3']});
+                gybMap = L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',{
+                        subdomains:['mt0','mt1','mt2','mt3']});
+                gtrMap = L.tileLayer('http://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}',{
+                        subdomains:['mt0','mt1','mt2','mt3']});
+                otmMap = L.tileLayer(otmUrl, {attribution: otmAttrib});
+                
+		//Penambahan dan menampilkan base layer
+        var baseLayers = {
+			"OSM Mapnik": osmMap,
+            "Google Street": gstMap,
+            "Google Satellite": gtlMap,
+            "Google Hybird": gybMap,
+            "Google Terrain": gtrMap,
+	        "Topography": otmMap
+            };
+	  
+		 //Menambahkan base layer ke control layers
+         /* var layer = L.control.layers(baseLayers).addTo(map);
+            var htmlObject = layer.getContainer();
+            var a = document.getElementById('profile')
+            function setParent(el, newParent){
+                newParent.appendChild(el);
+            }
+            setParent(htmlObject, a); 
+            */
+
+        var osmMapCheck = document.getElementById('osmMapCheck');
+        var gstMapCheck = document.getElementById('gstMapCheck');
+        var gtlMapCheck = document.getElementById('gtlMapCheck');
+        var gybMapCheck = document.getElementById('gybMapCheck');
+        var gtrMapCheck = document.getElementById('gtrMapCheck');
+        var otmMapCheck = document.getElementById('otmMapCheck');
+
+        osmMapCheck.addEventListener('change', function() {
+        // Switch to streets basemap
+        if (osmMapCheck.checked) {
+            map.addLayer(osmMap);
+        } else {
+            map.removeLayer(osmMap);
+        }
+        });
+
+        gstMapCheck.addEventListener('change', function() {
+        // Switch to satellite basemap
+        if (gstMapCheck.checked) {
+            map.addLayer(gstMap);
+        } else {
+            map.removeLayer(gstMap);
+        }
+        });
+
+        gtlMapCheck.addEventListener('change', function() {
+        // Switch to streets basemap
+        if (gtlMapCheck.checked) {
+            map.addLayer(gtlMap);
+        } else {
+            map.removeLayer(gtlMap);
+        }
+        });
+
+        gybMapCheck.addEventListener('change', function() {
+        // Switch to satellite basemap
+        if (gybMapCheck.checked) {
+            map.addLayer(gybMap);
+        } else {
+            map.removeLayer(gybMap);
+        }
+        });
+
+        gtrMapCheck.addEventListener('change', function() {
+        // Switch to streets basemap
+        if (gtrMapCheck.checked) {
+            map.addLayer(gtrMap);
+        } else {
+            map.removeLayer(gtrMap);
+        }
+        });
+
+        otmMapCheck.addEventListener('change', function() {
+        // Switch to satellite basemap
+        if (otmMapCheck.checked) {
+            map.addLayer(otmMap);
+        } else {
+            map.removeLayer(otmMap);
+        }
+        });
+       
+        var sidebar = L.control.sidebar('sidebar').addTo(map);
+
+        // Layer Vektor
+        var BAdmDesageojson = L.geoJSON(BAdmDesageojson,{
+                style: function(feature) {
+                    return {
+                        fillOpacity: 0,
+                        color: 'black',
+                        weight: 1
+                    };
+                },
+          onEachFeature: function (feature, layer) {
+            layer.bindPopup(
+                'Desa adalah ' +
+                '<strong>' +
+                    feature.properties.DESA +
+                '</strong>'
+            );
+        }});
+
+        var LayerLCZVektor = L.geoJSON(LCZVektorgeojson,{
+                style: function(feature) {
+                    switch(String(feature.properties['DN'])) {
+                        case '1': return {color: "#8c0000", fillOpacity: 1};
+                        case '2': return {color: "#d10000", fillOpacity: 1};
+                        case '3': return {color: "#ff0000", fillOpacity: 1};
+                        case '4': return {color: "#bf4d00", fillOpacity: 1};
+                        case '5': return {color: "#ff6600", fillOpacity: 1};
+                        case '6': return {color: "#ff9955", fillOpacity: 1};
+                        case '8': return {color: "#bcbcbc", fillOpacity: 1};
+                        case '9': return {color: "#ffccaa", fillOpacity: 1};
+                        case '11': return {color: "#006a00", fillOpacity: 1};
+                        case '12': return {color: "#00aa00", fillOpacity: 1};
+                        case '13': return {color: "#648525", fillOpacity: 1};
+                        case '14': return {color: "#b9db79", fillOpacity: 1};
+                        case '15': return {color: "#000000", fillOpacity: 1};
+                        case '16': return {color: "#fbf7ae", fillOpacity: 1};
+                        case '17': return {color: "#6a6aff", fillOpacity: 1};
+                    };
+                },
+          onEachFeature: function (feature, layer) {
+            layer.bindPopup(
+                'Kelas LCZ ' +
+                '<strong>' +
+                    feature.properties.Legenda +
+                '</strong>'
+            );
+        }});
+
+        var BAdmKecamatangeojson = L.geoJSON(BAdmKecamatangeojson,{
+            style: function(feature) {
+                        return {
+                            fillOpacity: 0,
+                            color: 'black',
+                            weight: 1
+                        };
+                    },
+            onEachFeature: function (feature, layer) {
+            layer.bindPopup(
+                'Kecamatan adalah ' +
+                '<strong>' +
+                    feature.properties.KECAMATAN +
+                '</strong>'
+            );
+        }});
+
+        // Mendefinisikan Raster
+        var img_bounds = [[-7.836925634014031,110.2166436306895],[-7.542560695899953,110.54633236137727]];
+
+        // Raster Peta SPL
+        var layer_LKemarau_2018 = L.tileLayer('layers/qtile/SPLK2018/{z}/{x}/{y}.png', {
+            maxZoom: 15,
+            tms: false,
+            attribution: 'Generated by Qtiles'
+        });
+        var layer_LKemarau_2020 = L.tileLayer('layers/qtile/SPLK2020/{z}/{x}/{y}.png', {
+            maxZoom: 15,
+            tms: false,
+            attribution: 'Generated by Qtiles'
+        });
+        var layer_LKemarau_2022 = L.tileLayer('layers/qtile/SPLK2022/{z}/{x}/{y}.png', {
+            maxZoom: 15,
+            tms: false,
+            attribution: 'Generated by Qtiles'
+        });
+
+        var layer_LHujan_2018 = L.tileLayer('layers/qtile/SPLP2018/{z}/{x}/{y}.png', {
+            maxZoom: 15,
+            tms: false,
+            attribution: 'Generated by Qtiles'
+        });
+        var layer_LHujan_2020 = L.tileLayer('layers/qtile/SPLP2020/{z}/{x}/{y}.png', {
+            maxZoom: 15,
+            tms: false,
+            attribution: 'Generated by Qtiles'
+        });
+        var layer_LHujan_2022 = L.tileLayer('layers/qtile/SPLP2022/{z}/{x}/{y}.png', {
+            maxZoom: 15,
+            tms: false,
+            attribution: 'Generated by Qtiles'
+        });
+
+        // Raster LCZ 2022
+        var layer_LCZ = L.tileLayer('layers/qtile/LCZ/{z}/{x}/{y}.png', {
+            maxZoom: 15,
+            tms: false,
+            attribution: 'Generated by Qtiles'
+        });
+
+        var BAdmDesaCheck = document.getElementById('BAdmDesaCheck');
+        var BAdmKecamatanCheck = document.getElementById('BAdmKecamatanCheck');
+        var LCZVektorCheck = document.getElementById('LCZVektorCheck');
+
+        var LKemarau_2018Check = document.getElementById('LKemarau_2018Check');
+        var LKemarau_2020Check = document.getElementById('LKemarau_2020Check');
+        var LKemarau_2022Check = document.getElementById('LKemarau_2022Check');
+
+        var LHujan_2018Check = document.getElementById('LHujan_2018Check');
+        var LHujan_2020Check = document.getElementById('LHujan_2020Check');
+        var LHujan_2022Check = document.getElementById('LHujan_2022Check');
+
+        var LCZCheck = document.getElementById('LCZCheck');
+
+        function showImage() {
+            var imageContainer = document.getElementById("image-container2");
+
+            if (LCZVektorCheck.checked || LCZCheck.checked) {
+                imageContainer.innerHTML = "<img src='images/legenda_lcz.png' alt='Legenda LCZ' class='bottom-left'>";
+            } else if (
+                LKemarau_2018Check.checked || 
+                LKemarau_2020Check.checked || 
+                LKemarau_2022Check.checked
+                ) {
+                imageContainer.innerHTML = "<img src='images/legenda_spl_kemarau.png' alt='Legenda SPL Kemarau' class='bottom-left'>";
+            } else if (
+                LHujan_2018Check.checked || 
+                LHujan_2020Check.checked || 
+                LHujan_2022Check.checked
+                ) {
+                imageContainer.innerHTML = "<img src='images/legenda_spl_hujan.png' alt='Legenda SPL Hujan' class='bottom-left'>";
+            } else {
+                imageContainer.innerHTML = "";
+            }
+        }
+        
+        function hideImage() {
+            var imageContainer = document.getElementById("image-container2");
+            imageContainer.innerHTML = "";
+        }
+
+        BAdmDesaCheck.addEventListener('change', function() {
+            if (BAdmDesaCheck.checked) {
+                map.addLayer(BAdmDesageojson);
+            } else {
+                map.removeLayer(BAdmDesageojson);
+            }
+        });
+
+        BAdmKecamatanCheck.addEventListener('change', function() {
+            if (BAdmKecamatanCheck.checked) {
+                map.addLayer(BAdmKecamatangeojson);
+            } else {
+                map.removeLayer(BAdmKecamatangeojson);
+            }
+        });
+
+        LKemarau_2018Check.addEventListener('change', function() {
+            if (LKemarau_2018Check.checked) {
+                map.addLayer(layer_LKemarau_2018);
+                showImage();
+            } else {
+                map.removeLayer(layer_LKemarau_2018);
+                hideImage()
+            }
+        });
+
+        LKemarau_2020Check.addEventListener('change', function() {
+            if (LKemarau_2020Check.checked) {
+                map.addLayer(layer_LKemarau_2020);
+                showImage();
+            } else {
+                map.removeLayer(layer_LKemarau_2020);
+                hideImage()
+            }
+        });
+
+        LKemarau_2022Check.addEventListener('change', function() {
+            if (LKemarau_2022Check.checked) {
+                map.addLayer(layer_LKemarau_2022);
+                showImage();
+            } else {
+                map.removeLayer(layer_LKemarau_2022);
+                hideImage()
+            }
+        });
+
+        LHujan_2018Check.addEventListener('change', function() {
+            if (LHujan_2018Check.checked) {
+                map.addLayer(layer_LHujan_2018);
+                showImage();
+            } else {
+                map.removeLayer(layer_LHujan_2018);
+                hideImage()
+            }
+        });
+
+        LHujan_2020Check.addEventListener('change', function() {
+            if (LHujan_2020Check.checked) {
+                map.addLayer(layer_LHujan_2020);
+                showImage();
+            } else {
+                map.removeLayer(layer_LHujan_2020);
+                hideImage()
+            }
+        });
+
+        LHujan_2022Check.addEventListener('change', function() {
+            if (LHujan_2022Check.checked) {
+                map.addLayer(layer_LHujan_2022);
+                showImage();
+            } else {
+                map.removeLayer(layer_LHujan_2022);
+                hideImage()
+            }
+        });
+
+        LCZVektorCheck.addEventListener('change', function() {
+            if (LCZVektorCheck.checked) {
+                map.addLayer(LayerLCZVektor);
+                showImage();
+            } else {
+                map.removeLayer(LayerLCZVektor);
+                hideImage()
+            }
+        });
+        
+        LCZCheck.addEventListener('change', function() {
+            if (LCZCheck.checked) {
+                map.addLayer(layer_LCZ);
+                showImage();
+            } else {
+                map.removeLayer(layer_LCZ);
+                hideImage()
+            }
+        });
+
+        var groupTitles = document.querySelectorAll('.basemap-group-title');
+        groupTitles.forEach(function(title) {
+            title.addEventListener('click', function() {
+                var groupContent = this.nextElementSibling;
+                groupContent.style.display = groupContent.style.display === 'none' ? 'block' : 'none';
+            });
+        });
+        </script>
+    </body>
+</html>
