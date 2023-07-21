@@ -1,13 +1,13 @@
 Tutorial to open this Webgis Script.
 
 1. Download all files and folders in "Script_Webgis"
-2. Go to layers/qtile/folder qtile_must download.txt. Please, go to the Google Drive files, download, and unzip it. After that, please put all those files and folder into the qtile folder. It's important because it shows all the raster layer in map visualization. Why I put those qtile separate? It because it contains more than 120000 png.
-3. You can start by opening the beranda.html and explore the webgis.
+2. Go to layers/qtile/folder qtile_must download.txt. Please, go to the Google Drive files, download, and unzip it. After that, please put all those files and folders into the qtile folder. It's important because it shows all the raster layers in map visualization. Why do I put those qtile separately? It because it contains more than 120000 png.
+3. You can start by opening the beranda.html and exploring the webgis.
 4. Thank you and have a nice day ^^.
 
-Ps. This is my first time use Github. I'll receive and open for any comments in order to be a better person when using a Github. You can contact me by the email. Thank you.
+Ps. This is my first time using Github. I'll receive and be open to any comments in order to be a better person when using Github. Please feel free to contact me by email. Thank you.
 
-There are some source that I used in my webgis. Thank you for the help. Credit to the owner.
+There are some sources that I used in my webgis. Thank you for the help—credit to the owner.
 
 1.
 Template Name: Impact
