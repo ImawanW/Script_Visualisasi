@@ -6,7 +6,7 @@ Tutorial to open this Webgis Script.
 4. In case the files and folders in Github error, You may download the alternative from this link: https://drive.google.com/drive/folders/1_DL7DhIpdWh53IQTvzqVjYYt3wFni7ZN?usp=sharing.
 5. Thank you and have a nice day ^^.
 
-Ps. This is my first time using Github. I'll receive and be open to any comments in order to be a better person when using Github. Please feel free to contact me by email. Thank you.
+Ps. This is my first time using Github. I'll receive and be open to any comments in order to be a better person when using Github. Please feel free to contact me by email. Disclaimer, this webgis use Indonesia Language. Thank you.
 
 There are some sources that I used in my webgis. Thank you for the help—credit to the owner.
 
