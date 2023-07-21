@@ -3,7 +3,8 @@ Tutorial to open this Webgis Script.
 1. Download all files and folders in "Script_Webgis"
 2. Go to layers/qtile/folder qtile_must download.txt. Please, go to the Google Drive files, download, and unzip it. After that, please put all those files and folders into the qtile folder. It's important because it shows all the raster layers in map visualization. Why do I put those qtile separately? It because it contains more than 120000 png.
 3. You can start by opening the beranda.html and exploring the webgis.
-4. Thank you and have a nice day ^^.
+4. In case the files and folders in Github error, You may download the alternative from this link: https://drive.google.com/drive/folders/1_DL7DhIpdWh53IQTvzqVjYYt3wFni7ZN?usp=sharing.
+5. Thank you and have a nice day ^^.
 
 Ps. This is my first time using Github. I'll receive and be open to any comments in order to be a better person when using Github. Please feel free to contact me by email. Thank you.
 
